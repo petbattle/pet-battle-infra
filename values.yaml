@@ -1,0 +1,24 @@
+# grafana
+grafana:
+  enabled: true
+  admin_user: root
+  admin_password: secret
+
+# keycloak
+keycloak:
+  enabled: true
+
+# datagrid
+infinispan:
+  enabled: true
+  service: infinispan
+  realm: default
+  infinispandevpwd: password
+  infinispanoppwd: password
+  infinispanuser: developer
+
+# operatorgroup
+operatorgroup:
+  enabled: false
+  targetNamespaces:
+    - pet-battle-tournament
