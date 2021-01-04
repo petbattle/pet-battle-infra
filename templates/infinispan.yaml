@@ -36,7 +36,7 @@ data:
   INFINISPAN_PASSWORD: {{ .Values.infinispan.infinispandevpwd | b64enc }}
 kind: Secret
 metadata:
-  name: {{ include "pet-battle-infra.fullname" . }}-infinispan-auth
+  name: infinispan-auth
   labels:
     {{- include "pet-battle-infra.labels" . | nindent 4 }}
 type: Opaque
