@@ -32,10 +32,11 @@ spec:
     enabled: true
   dashboardLabelSelector:
     - matchExpressions:
-        - key: app
+        - key: monitoring-key
           operator: In
           values:
             - grafana
+            - middleware
 ---
 {{- if .Values.grafana.BEARER_TOKEN }}
 apiVersion: integreatly.org/v1alpha1
