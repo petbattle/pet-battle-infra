@@ -4,15 +4,13 @@ kind: Subscription
 metadata:
   name: keycloak-operator
   generation: 1
-  labels:
-    operators.coreos.com/keycloak-operator.keycloak: ""
 spec:
   channel: alpha
   installPlanApproval: Automatic
   name: keycloak-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: keycloak-operator.v11.0.0
+  startingCSV: keycloak-operator.v12.0.1
 ---
 apiVersion: keycloak.org/v1alpha1
 kind: Keycloak
@@ -25,6 +23,49 @@ spec:
   instances: 1
   externalAccess:
     enabled: True
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: pbserver
+  labels:
+    client: pbserver
+spec:
+  realmSelector:
+    matchLabels:
+      realm: pbrealm
+  client:
+    name: pbserver
+    clientId: pbserver
+    bearerOnly: true
+    protocol: openid-connect
+    ########################################################
+    #TODO : These URLs need to be changed before deployment#
+    # The second url is only used for testing              #
+    ########################################################
+    rootUrl: https://www.keycloak.org/app/
+    redirectUris:
+        - "http://localhost:3000/*"
+    ########################################################
+    standardFlowEnabled: true
+    serviceAccountsEnabled: true
+    directAccessGrantsEnabled: true
+    surrogateAuthRequired: false
+    enabled: true
+    alwaysDisplayInConsole: false,
+    clientAuthenticatorType: "client-secret"
+    consentRequired: false
+    implicitFlowEnabled: false
+    authorizationServicesEnabled: true
+    publicClient: false
+    frontchannelLogout: false
+    fullScopeAllowed: true
+    nodeReRegistrationTimeout: -1
+    defaultRoles:
+        - "pbplayer"
+        - "pbviewer"
+        - "pbtest"
+        - "pbadmin"
 ---
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakClient
@@ -47,7 +88,6 @@ spec:
     ########################################################
     rootUrl: https://www.keycloak.org/app/
     redirectUris:
-        - "https://www.keycloak.org/app/*"
         - "http://localhost:3000/*"
     ########################################################
     standardFlowEnabled: true
