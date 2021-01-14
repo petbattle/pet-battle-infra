@@ -5,5 +5,5 @@ Pet Battle infrastructure helm chart. This chart requires cluster admin privileg
 ```bash
 helm repo add petbattle https://petbattle.github.io/helm-charts
 helm repo update
-helm install petbattle/pet-battle-infra --version=1.0.3 --set operatorgroup.enabled=true --set operatorgroup.targetNamespaces={petbattle} --namespace petbattle --create-namespace --generate-name
+helm install petbattle/pet-battle-infra --version=1.0.4 --set operatorgroup.enabled=true --set operatorgroup.targetNamespaces={petbattle} --namespace petbattle --create-namespace --generate-name
 ```
