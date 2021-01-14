@@ -43,9 +43,9 @@ spec:
     #TODO : These URLs need to be changed before deployment#
     # The second url is only used for testing              #
     ########################################################
-    rootUrl: https://www.keycloak.org/app/
+    rootUrl: http://localhost
     redirectUris:
-        - "http://localhost:3000/*"
+      - "http://localhost:3000/*"
     ########################################################
     standardFlowEnabled: true
     serviceAccountsEnabled: true
@@ -62,10 +62,10 @@ spec:
     fullScopeAllowed: true
     nodeReRegistrationTimeout: -1
     defaultRoles:
-        - "pbplayer"
-        - "pbviewer"
-        - "pbtest"
-        - "pbadmin"
+      - "pbplayer"
+      - "pbviewer"
+      - "pbtest"
+      - "pbadmin"
 ---
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakClient
@@ -86,9 +86,9 @@ spec:
     #TODO : These URLs need to be changed before deployment#
     # The second url is only used for testing              #
     ########################################################
-    rootUrl: https://www.keycloak.org/app/
+    rootUrl: http://localhost:3000
     redirectUris:
-        - "http://localhost:3000/*"
+      - "http://localhost:3000/*"
     ########################################################
     standardFlowEnabled: true
     serviceAccountsEnabled: true
@@ -105,10 +105,10 @@ spec:
     fullScopeAllowed: true
     nodeReRegistrationTimeout: -1
     defaultRoles:
-        - "pbplayer"
-        - "pbviewer"
-        - "pbtest"
-        - "pbadmin"
+      - "pbplayer"
+      - "pbviewer"
+      - "pbtest"
+      - "pbadmin"
 ---
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakRealm
@@ -125,6 +125,7 @@ spec:
     registrationAllowed: true
     registrationEmailAsUsername: true
     rememberMe: true
+    sslRequired: "external"
   instanceSelector:
     matchLabels:
       app: pbkeycloak
