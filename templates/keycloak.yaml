@@ -125,7 +125,6 @@ spec:
     registrationAllowed: true
     registrationEmailAsUsername: true
     rememberMe: true
-    sslRequired: "true"
   instanceSelector:
     matchLabels:
       app: pbkeycloak
