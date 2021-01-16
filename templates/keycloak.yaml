@@ -38,14 +38,6 @@ spec:
     clientId: pbserver
     bearerOnly: true
     protocol: openid-connect
-    ########################################################
-    #TODO : These URLs need to be changed before deployment#
-    # The second url is only used for testing              #
-    ########################################################
-    rootUrl: http://localhost
-    redirectUris:
-      - "http://localhost:3000/*"
-    ########################################################
     standardFlowEnabled: true
     serviceAccountsEnabled: true
     directAccessGrantsEnabled: true
@@ -86,9 +78,10 @@ spec:
     #TODO : These URLs need to be changed before deployment#
     # The second url is only used for testing              #
     ########################################################
-    rootUrl: http://localhost:3000
     redirectUris:
-      - "http://localhost:3000/*"
+      - "http://localhost:4200/*"
+    webOrigins:
+      - "*"
     ########################################################
     standardFlowEnabled: true
     serviceAccountsEnabled: true
