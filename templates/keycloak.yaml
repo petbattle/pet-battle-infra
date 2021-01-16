@@ -92,8 +92,6 @@ spec:
     clientAuthenticatorType: "client-secret"
     consentRequired: false
     implicitFlowEnabled: false
-    authorizationServicesEnabled: true
-    publicClient: false
     frontchannelLogout: false
     fullScopeAllowed: true
     nodeReRegistrationTimeout: -1
