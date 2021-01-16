@@ -81,6 +81,7 @@ spec:
     clientId: pbclient
     bearerOnly: false
     protocol: openid-connect
+    publicClient: true
     ########################################################
     #TODO : These URLs need to be changed before deployment#
     # The second url is only used for testing              #
