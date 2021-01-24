@@ -19,6 +19,13 @@ infinispan:
 
 # operatorgroup
 operatorgroup:
-  enabled: false
   targetNamespaces:
     - pet-battle-tournament
+
+# certutil
+certutil:
+  enabled: false
+
+# subscriptions
+subscriptions:
+  only: false

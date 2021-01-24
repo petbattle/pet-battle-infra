@@ -1,4 +1,4 @@
-{{- if .Values.operatorgroup.enabled }}
+{{- if and .Values.subscriptions.only (or .Values.grafana.enabled .Values.infinispan.enabled .Values.keycloak.enabled) }}
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
