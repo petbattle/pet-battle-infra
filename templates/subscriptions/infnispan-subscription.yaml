@@ -1,4 +1,4 @@
-{{- if and .Values.infinispan.enabled .Values.subscriptions.only }}
+{{- if or .Values.infinispan.enabled .Values.subscriptions.only }}
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription

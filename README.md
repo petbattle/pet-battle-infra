@@ -17,7 +17,7 @@ You can run an install from the source code by replacing the chart repo and vers
 ```bash
 # e.g replace this:
 petbattle/pet-battle-infra --version=1.0.7
-# with a dot
+# with a dot to use files from current directory
 .
 ```
 
