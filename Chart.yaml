@@ -11,6 +11,6 @@ maintainers:
 dependencies:
   - name: pet-battle-infra-subs
     version: "1.0.0"
-    repository: "https://eformat.github.io/helm-charts"
+    repository: "https://petbattle.github.io/helm-charts"
     tags:
       - subs
