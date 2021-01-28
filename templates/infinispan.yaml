@@ -1,4 +1,4 @@
-{{- if and .Values.infinispan.enabled (not .Values.subscriptions.only) }}
+{{- if .Values.infinispan.enabled }}
 ---
 apiVersion: infinispan.org/v1
 kind: Infinispan

@@ -1,4 +1,4 @@
-{{- if and .Values.keycloak.enabled (not .Values.subscriptions.only) }}
+{{- if .Values.keycloak.enabled }}
 ---
 apiVersion: keycloak.org/v1alpha1
 kind: Keycloak
