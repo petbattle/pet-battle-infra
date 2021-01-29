@@ -1,4 +1,3 @@
-{{- if .Values.keycloak.enabled }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -33,4 +32,3 @@ subjects:
 - kind: ServiceAccount
   name: default
   namespace: {{ .Release.Namespace }}
-{{- end -}}
