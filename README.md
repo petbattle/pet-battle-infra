@@ -16,3 +16,8 @@ If you are installing in a new cluster without these CRD's
 oc get crd keycloakrealms.keycloak.org grafanadashboards.integreatly.org infinispans.infinispan.org
 ```
 Please see [pet-battle-infra-subs](pet-battle-infra-subs#pet-battle-infra-subs) first.
+
+To unsintall
+```bash
+helm uninstall pet-battle-infra --namespace petbattle
+```
