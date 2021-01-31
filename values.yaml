@@ -1,3 +1,8 @@
+# pet-battle redirect uri name
+pet_battle_uri_name: pet-battle
+# if helm lookup() not supported, this app domain is used
+app_domain: example.com
+
 # grafana
 grafana:
   enabled: true
