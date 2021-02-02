@@ -1,0 +1,8 @@
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: pet-battle-tournament
+spec:
+  targetNamespaces: 
+    {{- list .Release.Namespace | toYaml | nindent 4 }}

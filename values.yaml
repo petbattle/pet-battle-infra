@@ -2,6 +2,8 @@
 pet_battle_uri_name: pet-battle
 # if helm lookup() not supported, this app domain is used
 app_domain: example.com
+# if helm lookup() not suported, this is used
+install_cert_util: false
 
 # grafana
 grafana:

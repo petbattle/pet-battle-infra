@@ -4,6 +4,9 @@ apiVersion: integreatly.org/v1alpha1
 kind: Grafana
 metadata:
   name: pb-grafana
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
 spec:
   config:
     auth:
@@ -31,6 +34,9 @@ apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
   name: prometheus-grafanadatasource
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
 spec:
   datasources:
     - access: proxy

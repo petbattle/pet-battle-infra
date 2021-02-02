@@ -7,6 +7,9 @@ metadata:
   labels:
     app: pbkeycloak
     {{- include "pet-battle-infra.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
 spec:
   instances: 1
   externalAccess:
@@ -18,6 +21,9 @@ metadata:
   name: pbserver
   labels:
     client: pbserver
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
 spec:
   realmSelector:
     matchLabels:
@@ -53,6 +59,9 @@ metadata:
   name: pbclient
   labels:
     client: pbclient
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
 spec:
   realmSelector:
     matchLabels:
@@ -95,6 +104,9 @@ metadata:
   name: pbrealm
   labels:
     realm: pbrealm
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
 spec:
   realm:
     id: "pbrealm"
