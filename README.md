@@ -11,6 +11,8 @@ helm upgrade --install pet-battle-infra . --namespace petbattle --create-namespa
 helm upgrade --install pet-battle-infra petbattle/pet-battle-infra --version=1.0.10 --namespace petbattle --create-namespace
 ```
 
+To install `cert-util` at global scope in a cluster you must `--set install_cert_util=true`
+
 To unsintall
 ```bash
 helm uninstall pet-battle-infra --namespace petbattle
