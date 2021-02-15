@@ -75,7 +75,7 @@ spec:
     ########################################################
     # These will need adjusting. The second url is used for testing. Web origins is open.
     redirectUris:
-      - "http://{{ $.Values.pet_battle_uri_name }}-{{ .Release.Namespace }}.{{ include "pet-battle-infra.app_domain" . }}/*"
+      - "https://{{ $.Values.pet_battle_uri_name }}-{{ .Release.Namespace }}.{{ include "pet-battle-infra.app_domain" . }}/*"
       - "http://localhost:4200/*"
     webOrigins:
       - "*"
