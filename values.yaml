@@ -4,6 +4,8 @@ pet_battle_uri_name: pet-battle
 app_domain: example.com
 # if helm lookup() not suported, this is used
 install_cert_util: false
+# this is for argo type deployments (set to true) dont deploy helm hooked resources
+ignoreHelmHooks: false
 
 # grafana
 grafana:
