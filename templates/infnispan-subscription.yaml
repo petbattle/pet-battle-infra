@@ -9,4 +9,4 @@ spec:
   name: infinispan
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: infinispan-operator.v2.1.1
+  startingCSV: infinispan-operator.v2.1.2
