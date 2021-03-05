@@ -21,7 +21,6 @@ spec:
         expose:
           type: LoadBalancer
   security:
-    endpointAuthentication: false
     endpointEncryption:
       type: Service
       certServiceName: service.beta.openshift.io 
