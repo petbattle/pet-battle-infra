@@ -21,6 +21,9 @@ spec:
         expose:
           type: LoadBalancer
   security:
+    endpointAuthentication: false
+    endpointEncryption:
+      type: Secret
     endpointSecretName: infinispan-connect-secret
 ---
 apiVersion: v1
