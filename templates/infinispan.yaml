@@ -23,7 +23,9 @@ spec:
   security:
     endpointAuthentication: false
     endpointEncryption:
-      type: Secret
+      type: Service
+      certServiceName: service.beta.openshift.io 
+      certSecretName: infinispan-cert-secret
     endpointSecretName: infinispan-connect-secret
 ---
 apiVersion: v1
