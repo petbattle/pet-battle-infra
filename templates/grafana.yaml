@@ -4,11 +4,12 @@ apiVersion: integreatly.org/v1alpha1
 kind: Grafana
 metadata:
   name: pb-grafana
-  {{- if not .Values.ignoreHelmHooks }}
   annotations:
+    {{- if not .Values.ignoreHelmHooks }}
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "25"
-  {{- end }}
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   config:
     auth:
@@ -36,11 +37,12 @@ apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
   name: prometheus-grafanadatasource
-  {{- if not .Values.ignoreHelmHooks }}
   annotations:
+    {{- if not .Values.ignoreHelmHooks }}
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "25"
-  {{- end }}
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   datasources:
     - access: proxy
