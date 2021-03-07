@@ -4,9 +4,9 @@ kind: Subscription
 metadata:
   name: infinispan
 spec:
-  channel: 2.1.x
+  channel: 8.1.x
   installPlanApproval: Automatic
-  name: infinispan
-  source: community-operators
+  name: datagrid
+  source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: infinispan-operator.v2.1.2
+  startingCSV: datagrid-operator.v8.1.5
