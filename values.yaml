@@ -10,8 +10,6 @@ ignoreHelmHooks: false
 # grafana
 grafana:
   enabled: true
-  admin_user: root
-  admin_password: secret
 
 # keycloak
 keycloak:
