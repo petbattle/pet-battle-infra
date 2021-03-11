@@ -68,6 +68,7 @@ metadata:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "25"
     {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   config:
     log:
