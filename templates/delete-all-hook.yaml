@@ -21,7 +21,7 @@ spec:
               while [ 0 != $(oc get subscription grafana-operator infinispan keycloak-operator -o name 2>/dev/null | wc -l) ]; do
                 sleep 2;
               done
-              while [ 1 != $(oc get pods -o name 2>/dev/null | wc -l) ]; do
+              while [ 1 != $(oc get pods -o name | grep -e grafana -e keycloak -e infinispan 2>/dev/null | wc -l) ]; do
                 oc delete pod cluster-check 2>/dev/null
                 oc delete ClusterRole crd-reader 2>/dev/null
                 oc delete ClusterRoleBinding crd-reader-binding 2>/dev/null
