@@ -1,9 +1,15 @@
 {{- if .Values.grafana.enabled }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ServiceAccount
+apiVersion: v1
 metadata:
-  name: pb-grafana-proxy
+  name: grafana-serviceaccount
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pb-grafana-proxy-{{ .Release.Name }}-{{ .Release.Namespace }}
 rules:
   - apiGroups:
       - authentication.k8s.io
@@ -19,12 +25,12 @@ rules:
       - create
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: pb-grafana-proxy
+  name: pb-grafana-proxy-{{ .Release.Name }}-{{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  name: pb-grafana-proxy
+  name: pb-grafana-proxy-{{ .Release.Name }}-{{ .Release.Namespace }}
   kind: ClusterRole
 subjects:
   - kind: ServiceAccount
@@ -32,9 +38,9 @@ subjects:
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
-  name: pb-grafana-application-monitoring
+  name: pb-grafana-application-monitoring-{{ .Release.Name }}-{{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -66,7 +72,7 @@ metadata:
   annotations:
     {{- if not .Values.ignoreHelmHooks }}
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "25"
+    "helm.sh/hook-weight": "-25"
     {{- end }}
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:

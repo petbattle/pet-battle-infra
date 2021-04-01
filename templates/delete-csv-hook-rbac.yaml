@@ -10,9 +10,9 @@ metadata:
     "helm.sh/hook-delete-policy": hook-succeeded
 rules:
   - apiGroups:
-      - operators.coreos.com
+      - "*"
     resources:
-      - clusterserviceversions
+      - "*"
     verbs:
       - delete
       - list

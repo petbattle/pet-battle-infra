@@ -6,8 +6,8 @@ metadata:
   name: insert-bearer-token-hook
   annotations:
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "50"
-    "helm.sh/hook-delete-policy": hook-succeeded
+    "helm.sh/hook-weight": "100"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
 spec:
   containers:
     - image: quay.io/openshift/origin-cli:4.6
@@ -16,12 +16,12 @@ spec:
         - -c
         - |
           bearer_token=`cat /run/secrets/kubernetes.io/serviceaccount/token`
-          oc patch GrafanaDataSource  prometheus-grafanadatasource  --type='json' -p='[{"op": "add", "path":"/spec/datasources/0/secureJsonData/httpHeaderValue1", "value": "'"Bearer $bearer_token"'" }]'  
+          oc patch GrafanaDataSource prometheus-grafanadatasource  --type='json' -p='[{"op": "add", "path":"/spec/datasources/0/secureJsonData/httpHeaderValue1", "value": "'"Bearer $bearer_token"'" }]'  
       imagePullPolicy: IfNotPresent
       name: insert-bearer-token
   dnsPolicy: ClusterFirst
   restartPolicy: OnFailure
+  terminationGracePeriodSeconds: 10
   serviceAccount: grafana-serviceaccount
   serviceAccountName: grafana-serviceaccount
-  terminationGracePeriodSeconds: 10 
 {{- end }}

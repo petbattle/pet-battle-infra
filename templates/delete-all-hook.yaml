@@ -1,0 +1,47 @@
+{{- if not .Values.ignoreHelmHooks }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: delete-all
+  annotations:
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "2"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+        - image: quay.io/openshift/origin-cli:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -x
+              while [ 0 != $(oc get subscription grafana-operator infinispan keycloak-operator -o name 2>/dev/null | wc -l) ]; do
+                sleep 2;
+              done
+              while [ 1 != $(oc get pods -o name 2>/dev/null | wc -l) ]; do
+                oc delete pod cluster-check 2>/dev/null
+                oc delete ClusterRole crd-reader 2>/dev/null
+                oc delete ClusterRoleBinding crd-reader-binding 2>/dev/null
+                oc delete infinispan infinispan 2>/dev/null
+                oc delete keycloakclient pbclient pbserver 2>/dev/null
+                oc delete keycloakrealm pbrealm 2>/dev/null
+                oc delete keycloak pbkeycloak 2>/dev/null
+                oc delete grafana pb-grafana 2>/dev/null
+                oc patch keycloakuser myuser pbadmin --type='json' -p='[{"op": "remove" , "path": "/metadata/finalizers" }]' 2>/dev/null
+                oc patch keycloakclient pbclient --type='json' -p='[{"op": "remove" , "path": "/metadata/finalizers" }]' 2>/dev/null
+                oc patch keycloakclient pbserver --type='json' -p='[{"op": "remove" , "path": "/metadata/finalizers" }]' 2>/dev/null
+                oc patch keycloakrealm pbrealm --type='json' -p='[{"op": "remove" , "path": "/metadata/finalizers" }]' 2>/dev/null
+                oc delete $(oc get csv -l 'olm.copiedFrom notin (openshift-operators)' -o name) 2>/dev/null 2>/dev/null
+                sleep 2
+              done
+          imagePullPolicy: Always
+          name: delete-all
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      serviceAccount: delete-csv-job
+      serviceAccountName: delete-csv-job
+      terminationGracePeriodSeconds: 10
+{{- end }}
