@@ -30,6 +30,8 @@ spec:
                 oc delete keycloakrealm pbrealm 2>/dev/null
                 oc delete keycloak pbkeycloak 2>/dev/null
                 oc delete grafana pb-grafana 2>/dev/null
+                oc delete job patch-grafana-ds 2>/dev/null
+                oc delete sa patch-grafana-ds 2>/dev/null
                 oc patch keycloakuser myuser pbadmin --type='json' -p='[{"op": "remove" , "path": "/metadata/finalizers" }]' 2>/dev/null
                 oc patch keycloakclient pbclient --type='json' -p='[{"op": "remove" , "path": "/metadata/finalizers" }]' 2>/dev/null
                 oc patch keycloakclient pbserver --type='json' -p='[{"op": "remove" , "path": "/metadata/finalizers" }]' 2>/dev/null

@@ -1,27 +1,90 @@
 {{- if .Values.grafana.enabled }}
 ---
 apiVersion: v1
-kind: Pod
+kind: ServiceAccount
 metadata:
-  name: insert-bearer-token-hook
+  name: patch-grafana-ds
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "50"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: patch-grafana-ds-{{ .Release.Name }}-{{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "50"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+rules:
+  - apiGroups:
+      - integreatly.org
+    resources:
+      - grafanadatasources
+    verbs:
+      - get
+      - list
+      - patch
+  - apiGroups:
+      - ""
+    resources:
+      - serviceaccounts
+      - secrets
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: patch-grafana-ds-{{ .Release.Name }}-{{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "50"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: patch-grafana-ds-{{ .Release.Name }}-{{ .Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: patch-grafana-ds
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: patch-grafana-ds
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-weight": "100"
     "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
 spec:
-  containers:
-    - image: quay.io/openshift/origin-cli:4.6
-      command:
-        - /bin/bash
-        - -c
-        - |
-          bearer_token=`cat /run/secrets/kubernetes.io/serviceaccount/token`
-          oc patch GrafanaDataSource prometheus-grafanadatasource  --type='json' -p='[{"op": "add", "path":"/spec/datasources/0/secureJsonData/httpHeaderValue1", "value": "'"Bearer $bearer_token"'" }]'  
-      imagePullPolicy: IfNotPresent
-      name: insert-bearer-token
-  dnsPolicy: ClusterFirst
-  restartPolicy: OnFailure
-  terminationGracePeriodSeconds: 10
-  serviceAccount: grafana-serviceaccount
-  serviceAccountName: grafana-serviceaccount
+  backoffLimit: 10
+  activeDeadlineSeconds: 600
+  template:
+    spec:
+      containers:
+        - image: quay.io/openshift/origin-cli:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -x
+              echo "waiting for grafana pod ready..."
+              oc wait pod -lapp=grafana --for=condition=Ready --timeout=600s || exit $?
+              echo "Patching grafana datasource with token for authentication to prometheus"
+              TOKEN=`oc serviceaccounts get-token grafana-serviceaccount`
+              oc patch grafanadatasource prometheus-grafanadatasource --type='json' -p='[{"op":"add","path":"/spec/datasources/0/secureJsonData/httpHeaderValue1","value":"Bearer '${TOKEN}'"}]'
+              exit $?
+          imagePullPolicy: Always
+          name: patch-grafana-ds
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      serviceAccount: patch-grafana-ds
+      serviceAccountName: patch-grafana-ds
+      terminationGracePeriodSeconds: 30
 {{- end }}

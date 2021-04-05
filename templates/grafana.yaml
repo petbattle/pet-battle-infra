@@ -164,6 +164,7 @@ metadata:
     "helm.sh/hook-weight": "25"
     {{- end }}
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
   datasources:
     - access: proxy
@@ -175,7 +176,7 @@ spec:
         tlsSkipVerify: true
       name: Prometheus
       secureJsonData:
-        httpHeaderValue1: ''
+        httpHeaderValue1: 'Bearer $(BEARER_TOKEN)'
       type: prometheus
       url: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
   name: prometheus-grafanadatasource.yaml
