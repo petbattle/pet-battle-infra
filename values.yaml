@@ -23,3 +23,7 @@ infinispan:
   infinispandevpwd: password
   infinispanoppwd: password
   infinispanuser: developer
+
+# installplan approver
+installplan:
+  enabled: true

@@ -11,5 +11,5 @@ spec:
   name: cert-utils-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: cert-utils-operator.v1.0.1
+#  startingCSV: cert-utils-operator.v1.0.1
 {{- end }}
