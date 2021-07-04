@@ -5,16 +5,22 @@ kind: ServiceAccount
 metadata:
   name: installplan-approver-job
   annotations:
+    {{- if not .Values.ignoreHelmHooks }}
     "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true    
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: installplan-appprover-{{ .Release.Name }}-{{ .Release.Namespace }}
   annotations:
+    {{- if not .Values.ignoreHelmHooks }}
     "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 rules:
   - apiGroups:
     - operators.coreos.com
@@ -31,8 +37,11 @@ kind: RoleBinding
 metadata:
   name: installplan-appprover-{{ .Release.Name }}-{{ .Release.Namespace }}
   annotations:
+    {{- if not .Values.ignoreHelmHooks }}
     "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -47,8 +56,11 @@ kind: Job
 metadata:
   name: installplan-approver-job
   annotations:
+    {{- if not .Values.ignoreHelmHooks }}
     "helm.sh/hook-weight": "-1"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   backoffLimit: 10
   activeDeadlineSeconds: 600
