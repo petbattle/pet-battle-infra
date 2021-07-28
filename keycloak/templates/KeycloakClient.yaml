@@ -1,0 +1,90 @@
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: pbserver
+  labels:
+    client: pbserver
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  realmSelector:
+    matchLabels:
+      realm: pbrealm
+  client:
+    name: pbserver
+    clientId: pbserver
+    bearerOnly: true
+    protocol: openid-connect
+    standardFlowEnabled: true
+    serviceAccountsEnabled: true
+    directAccessGrantsEnabled: true
+    surrogateAuthRequired: false
+    enabled: true
+    alwaysDisplayInConsole: false,
+    clientAuthenticatorType: "client-secret"
+    consentRequired: false
+    implicitFlowEnabled: false
+    authorizationServicesEnabled: true
+    publicClient: false
+    frontchannelLogout: false
+    fullScopeAllowed: true
+    nodeReRegistrationTimeout: -1
+    defaultRoles:
+      - "pbplayer"
+      - "pbviewer"
+      - "pbtest"
+      - "pbadmin"
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
+  name: pbclient
+  labels:
+    client: pbclient
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  realmSelector:
+    matchLabels:
+      realm: pbrealm
+  client:
+    name: pbclient
+    clientId: pbclient
+    bearerOnly: false
+    protocol: openid-connect
+    publicClient: true
+    ########################################################
+    # These will need adjusting. The second url is used for testing. Web origins is open.
+    redirectUris:
+      - "https://{{ .Values.pet_battle_uri_name }}-{{ .Release.Namespace }}.{{ .Values.app_domain }}/*"
+      - "http://localhost:4200/*"
+    webOrigins:
+      - "*"
+    ########################################################
+    standardFlowEnabled: true
+    serviceAccountsEnabled: true
+    directAccessGrantsEnabled: true
+    surrogateAuthRequired: false
+    enabled: true
+    alwaysDisplayInConsole: false,
+    clientAuthenticatorType: "client-secret"
+    consentRequired: false
+    implicitFlowEnabled: false
+    frontchannelLogout: false
+    fullScopeAllowed: true
+    nodeReRegistrationTimeout: -1
+    defaultRoles:
+      - "pbplayer"
+      - "pbviewer"
+      - "pbtest"
+      - "pbadmin"
+
