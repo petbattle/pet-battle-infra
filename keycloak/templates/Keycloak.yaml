@@ -1,0 +1,19 @@
+---
+apiVersion: keycloak.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: pbkeycloak
+  labels:
+    app: pbkeycloak
+    {{- include "pet-battle-infra.labels" . | nindent 4 }}
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  instances: 1
+  externalAccess:
+    enabled: true
+

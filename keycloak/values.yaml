@@ -1,0 +1,10 @@
+---
+# pet-battle redirect uri name
+pet_battle_uri_name: pet-battle
+
+# override in argo
+app_domain: example.com
+# override in argo
+operator: true
+# override in argo
+ignoreHelmHooks: false
