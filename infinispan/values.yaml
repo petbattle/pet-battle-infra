@@ -1,0 +1,8 @@
+operator: true
+ignoreHelmHooks: false
+
+service: infinispan
+realm: default
+infinispandevpwd: password
+infinispanoppwd: password
+infinispanuser: developer

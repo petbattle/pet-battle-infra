@@ -1,0 +1,12 @@
+apiVersion: v2
+name: pet-battle-keycloak
+description: Pet Battle Infinispan
+type: application
+version: 1.0.0
+appVersion: 1.0.0
+home: https://petbattle.github.io/helm-charts
+icon: https://avatars1.githubusercontent.com/u/68044996?s=200&v=4
+maintainers:
+- name: ckavili
+- name: springdo
+- name: jtudela

@@ -1,0 +1,91 @@
+{{- if .Values.enabled }}
+---
+apiVersion: infinispan.org/v1
+kind: Infinispan
+metadata:
+  name: infinispan
+  labels:
+    {{- include "pet-battle-infra.labels" . | nindent 4 }}
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  replicas: 1
+  service:
+    type: DataGrid
+    sites:
+      local:
+        name: cloud
+        expose:
+          type: LoadBalancer
+  security:
+    endpointEncryption:
+      type: Service
+      certServiceName: service.beta.openshift.io 
+      certSecretName: infinispan-cert-secret
+    endpointSecretName: infinispan-connect-secret
+---
+apiVersion: v1
+data:
+  INFINISPAN_USER: {{ .Values.infinispanuser | b64enc }}
+  INFINISPAN_PASSWORD: {{ .Values.infinispandevpwd | b64enc }}
+kind: Secret
+metadata:
+  name: infinispan-auth
+  labels:
+    {{- include "pet-battle-infra.labels" . | nindent 4 }}
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: infinispan-connect-secret
+type: Opaque
+stringData:
+  identities.yaml: |-
+    credentials:
+    - username: developer
+      password: {{ .Values.infinispandevpwd }}
+    - username: operator
+      password: {{ .Values.infinispanoppwd }}
+---
+apiVersion: v1
+stringData:
+  username: {{ .Values.infinispanuser }}
+  password: {{ .Values.infinispandevpwd }}
+kind: Secret
+metadata:
+  name: infinispan-metrics-basic-auth
+type: Opaque
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "pet-battle-infra.labels" . | nindent 4 }}
+  name: infinispan-monitoring
+spec:
+  endpoints:
+    - targetPort: 11222
+      path: /metrics
+      honorLabels: true
+      basicAuth:
+        username:
+          key: username
+          name: infinispan-metrics-basic-auth
+        password:
+          key: password
+          name: infinispan-metrics-basic-auth
+      interval: 30s
+      scrapeTimeout: 10s
+      scheme: https
+      tlsConfig:
+        insecureSkipVerify: true
+        serverName: infinispan
+  selector:
+    matchLabels:
+      clusterName: infinispan
+{{- end }}

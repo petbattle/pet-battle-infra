@@ -1,0 +1,99 @@
+{{- if .Values.operator }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: grafana-installplan-job
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true    
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: grafana-installplan-{{ .Release.Name }}-{{ .Release.Namespace }}
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+rules:
+  - apiGroups:
+    - operators.coreos.com
+    resources:
+    - installplans
+    - subscriptions
+    verbs:
+    - get
+    - list
+    - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: grafana-installplan-{{ .Release.Name }}-{{ .Release.Namespace }}
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: grafana-installplan-appprover-{{ .Release.Name }}-{{ .Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: installplan-approver-job
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: grafana-installplan-job
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded,hook-failed
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  backoffLimit: 10
+  activeDeadlineSeconds: 600
+  template:
+    spec:
+      containers:
+        - image: quay.io/openshift/origin-cli:latest
+          command:
+            - /bin/bash
+            - -c
+            - |
+              set -x
+              while true; do
+                echo "Approving operator install - waiting for installplan ..."
+                state=$(oc get subscription grafana-operator -o jsonpath="{ .status.state }")
+                if [ "$state" == "UpgradePending" ]; then
+                  break
+                fi
+                sleep 3
+              done
+              installplan=$(oc get subscription --field-selector metadata.name=grafana-operator -o jsonpath='{.items[0].status.installPlanRef.name}')
+              if [ "`oc get installplan $installplan -o jsonpath="{.spec.approved}"`" == "false" ]; then
+                echo "Approving Subscription $subscription with install plan $installplan"
+                oc patch installplan $installplan --type=json -p='[{"op":"replace","path": "/spec/approved", "value": true}]'
+              else
+                echo "Install Plan '$installplan' already approved"
+              fi
+              exit $?
+          imagePullPolicy: Always
+          name: installplan-approver
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      serviceAccount: installplan-approver-job
+      serviceAccountName: installplan-approver-job
+      terminationGracePeriodSeconds: 30
+{{- end }}
