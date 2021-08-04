@@ -45,7 +45,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: infinispan-installplan-appprover-{{ .Release.Name }}-{{ .Release.Namespace }}
+  name: infinispan-installplan-{{ .Release.Name }}-{{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
     name: infinispan-installplan-job
