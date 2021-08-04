@@ -48,7 +48,7 @@ roleRef:
   name: infinispan-installplan-appprover-{{ .Release.Name }}-{{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
-    name: installplan-approver-job
+    name: infinispan-installplan-job
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: batch/v1
@@ -93,7 +93,7 @@ spec:
           name: installplan-approver
       dnsPolicy: ClusterFirst
       restartPolicy: OnFailure
-      serviceAccount: installplan-approver-job
-      serviceAccountName: installplan-approver-job
+      serviceAccount: infinispan-installplan-job
+      serviceAccountName: infinispan-installplan-job
       terminationGracePeriodSeconds: 30
 {{- end }}
