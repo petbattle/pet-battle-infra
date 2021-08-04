@@ -6,9 +6,9 @@ metadata:
   name: infinispan
 spec:
   channel: 8.1.x
-  installPlanApproval: Manual
+  installPlanApproval: Automatic
   name: datagrid
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: datagrid-operator.v8.1.7
+#  startingCSV: datagrid-operator.v8.1.7
 {{- end -}}
