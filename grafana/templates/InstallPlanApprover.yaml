@@ -45,7 +45,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: grafana-installplan-appprover-{{ .Release.Name }}-{{ .Release.Namespace }}
+  name: grafana-installplan-{{ .Release.Name }}-{{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
     name: installplan-approver-job
@@ -93,7 +93,7 @@ spec:
           name: installplan-approver
       dnsPolicy: ClusterFirst
       restartPolicy: OnFailure
-      serviceAccount: installplan-approver-job
-      serviceAccountName: installplan-approver-job
+      serviceAccount: grafana-installplan-job
+      serviceAccountName: grafana-installplan-job
       terminationGracePeriodSeconds: 30
 {{- end }}
