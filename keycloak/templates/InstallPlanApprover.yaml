@@ -48,7 +48,7 @@ roleRef:
   name: kc-installplan-appprover-{{ .Release.Name }}-{{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
-    name: installplan-approver-job
+    name: kc-installplan-job
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: batch/v1
@@ -93,7 +93,7 @@ spec:
           name: installplan-approver
       dnsPolicy: ClusterFirst
       restartPolicy: OnFailure
-      serviceAccount: installplan-approver-job
-      serviceAccountName: installplan-approver-job
+      serviceAccount: kc-installplan-job
+      serviceAccountName: kc-installplan-job
       terminationGracePeriodSeconds: 30
 {{- end }}
