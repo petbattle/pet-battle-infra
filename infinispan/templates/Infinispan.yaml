@@ -1,4 +1,3 @@
-{{- if .Values.enabled }}
 ---
 apiVersion: infinispan.org/v1
 kind: Infinispan
@@ -88,4 +87,3 @@ spec:
   selector:
     matchLabels:
       clusterName: infinispan
-{{- end }}
