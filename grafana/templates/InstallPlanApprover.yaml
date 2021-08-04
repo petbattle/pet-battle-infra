@@ -48,7 +48,7 @@ roleRef:
   name: grafana-installplan-{{ .Release.Name }}-{{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
-    name: installplan-approver-job
+    name: grafana-installplan-job
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: batch/v1
