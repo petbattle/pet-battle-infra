@@ -76,7 +76,7 @@ spec:
               while true; do
                 echo "Approving operator install - waiting for installplan ..."
                 state=$(oc get subscription grafana-operator -o jsonpath="{ .status.state }")
-                if [ "$state" == "UpgradePending" ]; then
+                if [ "$state" == "UpgradePending" ] ||  [ "$state" == "AtLatestKnown" ]; then
                   break
                 fi
                 sleep 3
