@@ -2,6 +2,46 @@
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakClient
 metadata:
+  name: pbserver
+  labels:
+    client: pbserver
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  realmSelector:
+    matchLabels:
+      realm: pbrealm
+  client:
+    name: pbserver
+    clientId: pbserver
+    bearerOnly: true
+    protocol: openid-connect
+    standardFlowEnabled: true
+    serviceAccountsEnabled: true
+    directAccessGrantsEnabled: true
+    surrogateAuthRequired: false
+    enabled: true
+    clientAuthenticatorType: "client-secret"
+    consentRequired: false
+    implicitFlowEnabled: false
+    authorizationServicesEnabled: false
+    publicClient: false
+    frontchannelLogout: false
+    fullScopeAllowed: true
+    nodeReRegistrationTimeout: -1
+    defaultRoles:
+      - "pbplayer"
+      - "pbviewer"
+      - "pbtest"
+      - "pbadmin"
+---
+apiVersion: keycloak.org/v1alpha1
+kind: KeycloakClient
+metadata:
   name: pbclient
   labels:
     client: pbclient
