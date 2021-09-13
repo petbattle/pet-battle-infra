@@ -28,7 +28,7 @@ spec:
     clientAuthenticatorType: "client-secret"
     consentRequired: false
     implicitFlowEnabled: false
-    authorizationServicesEnabled: true
+    authorizationServicesEnabled: false
     publicClient: false
     frontchannelLogout: false
     fullScopeAllowed: true
