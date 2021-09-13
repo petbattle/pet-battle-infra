@@ -18,7 +18,7 @@ spec:
   client:
     name: pbserver
     clientId: pbserver
-    secret: client-secret
+    secret:
     bearerOnly: true
     protocol: openid-connect
     standardFlowEnabled: true
