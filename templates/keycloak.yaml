@@ -37,6 +37,7 @@ spec:
   client:
     name: pbserver
     clientId: pbserver
+    secret: {{ uuidv4 | quote }}
     bearerOnly: true
     protocol: openid-connect
     standardFlowEnabled: true
@@ -104,6 +105,16 @@ spec:
       - "pbviewer"
       - "pbtest"
       - "pbadmin"
+    defaultClientScopes:
+      - "web-origins"
+      - "profile"
+      - "roles"
+      - "email"
+    optionalClientScopes:
+      - "address"
+      - "phone"
+      - "offline_access"
+      - "microprofile-jwt"
 ---
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakRealm
