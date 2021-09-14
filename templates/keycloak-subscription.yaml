@@ -5,8 +5,8 @@ metadata:
   name: keycloak-operator
 spec:
   channel: alpha
-  installPlanApproval: Manual
+  installPlanApproval: Automatic
   name: keycloak-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: keycloak-operator.v12.0.3
+  startingCSV: keycloak-operator.v15.0.2  

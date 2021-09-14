@@ -11,7 +11,7 @@ metadata:
 spec:
   containers:
   - name: crd-check 
-    image: quay.io/openshift/origin-cli:4.6
+    image: quay.io/openshift/origin-cli:4.8
     imagePullPolicy: IfNotPresent
     command: ['sh', '-c', 'while [ true ]; do oc get crd keycloakrealms.keycloak.org grafanadashboards.integreatly.org infinispans.infinispan.org; if [ $? -eq 0 ]; then break; fi ; sleep 5s; done']
   restartPolicy: Never

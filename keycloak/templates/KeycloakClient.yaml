@@ -18,6 +18,7 @@ spec:
   client:
     name: pbserver
     clientId: pbserver
+    secret: {{ uuidv4 | quote }}
     bearerOnly: true
     protocol: openid-connect
     standardFlowEnabled: true
@@ -25,11 +26,10 @@ spec:
     directAccessGrantsEnabled: true
     surrogateAuthRequired: false
     enabled: true
-    alwaysDisplayInConsole: false,
     clientAuthenticatorType: "client-secret"
     consentRequired: false
     implicitFlowEnabled: false
-    authorizationServicesEnabled: true
+    authorizationServicesEnabled: false
     publicClient: false
     frontchannelLogout: false
     fullScopeAllowed: true
@@ -75,7 +75,6 @@ spec:
     directAccessGrantsEnabled: true
     surrogateAuthRequired: false
     enabled: true
-    alwaysDisplayInConsole: false,
     clientAuthenticatorType: "client-secret"
     consentRequired: false
     implicitFlowEnabled: false
