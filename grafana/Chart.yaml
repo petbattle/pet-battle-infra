@@ -1,5 +1,5 @@
 apiVersion: v2
-name: pet-battle-keycloak
+name: pet-battle-grafana
 description: Pet Battle Grafana
 type: application
 version: 1.0.1
