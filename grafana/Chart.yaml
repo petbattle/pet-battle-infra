@@ -1,8 +1,8 @@
 apiVersion: v2
-name: pet-battle-keycloak
+name: pet-battle-grafana
 description: Pet Battle Grafana
 type: application
-version: 1.0.0
+version: 1.0.1
 appVersion: 1.0.0
 home: https://petbattle.github.io/helm-charts
 icon: https://avatars1.githubusercontent.com/u/68044996?s=200&v=4
