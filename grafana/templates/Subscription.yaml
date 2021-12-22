@@ -5,7 +5,7 @@ kind: Subscription
 metadata:
   name: grafana-operator
 spec:
-  channel: alpha
+  channel: v4 
   installPlanApproval: Automatic
   name: grafana-operator
   source: community-operators
