@@ -86,7 +86,7 @@ spec:
       level: "warn"
     auth:
       disable_login_form: False
-      dissable_signout_menu: True
+      disable_signout_menu: True
     auth.basic:
       enabled: True
     auth.anonymous:
@@ -110,7 +110,7 @@ spec:
         - '-openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
         - '-openshift-ca=/etc/grafana-configmaps/ocp-injected-certs/ca-bundle.crt'
         - '-skip-auth-regex=^/metrics'
-      image: 'quay.io/openshift/origin-oauth-proxy:4.2'
+      image: 'quay.io/openshift/origin-oauth-proxy:4.9.0'
       name: grafana-proxy
       ports:
         - containerPort: 9091
