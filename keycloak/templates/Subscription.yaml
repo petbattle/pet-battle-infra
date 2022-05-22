@@ -10,5 +10,4 @@ spec:
   name: keycloak-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: keycloak-operator.v17.0.0
 {{- end -}}
