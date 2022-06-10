@@ -65,7 +65,7 @@ spec:
   backoffLimit: 10
   activeDeadlineSeconds: 600
   template:
-    spec:
+    spec:kind: Job
       containers:
         - image: quay.io/openshift/origin-cli:latest
           command:
@@ -77,8 +77,11 @@ spec:
               oc wait pod -lapp=grafana --for=condition=Ready --timeout=600s || exit $?
               echo "Patching grafana datasource with token for authentication to prometheus"
               TOKEN=`oc serviceaccounts get-token grafana-serviceaccount`
-              oc patch grafanadatasource prometheus-grafanadatasource --type='json' -p='[{"op":"add","path":"/spec/datasources/0/secureJsonData/httpHeaderValue1","value":"Bearer '${TOKEN}'"}]'
-              exit $?
+              if test 0 == $(oc get grafanadatasource prometheus-grafanadatasource -o jsonpath="{.spec.datasources[0].secureJsonData.httpHeaderValue1}" | wc -w); then
+                oc patch grafanadatasource prometheus-grafanadatasource --type='json' -p='[{"op":"add","path":"/spec/datasources/0/secureJsonData/httpHeaderValue1","value":"Bearer '${TOKEN}'"}]'
+                exit $?
+              fi
+              exit 0
           imagePullPolicy: Always
           name: patch-grafana-ds
       dnsPolicy: ClusterFirst
