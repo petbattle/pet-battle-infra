@@ -65,7 +65,7 @@ spec:
   backoffLimit: 10
   activeDeadlineSeconds: 600
   template:
-    spec:kind: Job
+    spec:
       containers:
         - image: quay.io/openshift/origin-cli:latest
           command:
