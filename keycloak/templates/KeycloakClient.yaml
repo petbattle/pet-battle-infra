@@ -34,11 +34,6 @@ spec:
     frontchannelLogout: false
     fullScopeAllowed: true
     nodeReRegistrationTimeout: -1
-    defaultRoles:
-      - "pbplayer"
-      - "pbviewer"
-      - "pbtest"
-      - "pbadmin"
 ---
 apiVersion: keycloak.org/v1alpha1
 kind: KeycloakClient
@@ -81,9 +76,3 @@ spec:
     frontchannelLogout: false
     fullScopeAllowed: true
     nodeReRegistrationTimeout: -1
-    defaultRoles:
-      - "pbplayer"
-      - "pbviewer"
-      - "pbtest"
-      - "pbadmin"
-
