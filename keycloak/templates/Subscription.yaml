@@ -5,10 +5,10 @@ kind: Subscription
 metadata:
   name: keycloak-operator
 spec:
-  channel: fast
+  channel: alpha
   installPlanApproval: Automatic
   name: keycloak-operator
   source: community-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: keycloak-operator.v23.0.1
+  startingCSV: keycloak-operator.v19.0.3
 {{- end -}}
