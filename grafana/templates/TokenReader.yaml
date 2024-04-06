@@ -1,34 +1,34 @@
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: insert-bearer-token-view
-  annotations:
-    "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "-1"
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: grafanadatasources.integreatly.org-v1alpha1-view
-subjects:
-  - kind: ServiceAccount
-    name: grafana-serviceaccount
-    namespace: {{ .Release.Namespace }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: insert-bearer-token-edit
-  annotations:
-    "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "-1"
-    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: grafanadatasources.integreatly.org-v1alpha1-edit
-subjects:
-  - kind: ServiceAccount
-    name: grafana-serviceaccount
-    namespace: {{ .Release.Namespace }}
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   name: insert-bearer-token-view
+#   annotations:
+#     "helm.sh/hook": post-install,post-upgrade
+#     "helm.sh/hook-weight": "-1"
+#     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: grafanadatasources.integreatly.org-v1alpha1-view
+# subjects:
+#   - kind: ServiceAccount
+#     name: grafana-serviceaccount
+#     namespace: {{ .Release.Namespace }}
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: RoleBinding
+# metadata:
+#   name: insert-bearer-token-edit
+#   annotations:
+#     "helm.sh/hook": post-install,post-upgrade
+#     "helm.sh/hook-weight": "-1"
+#     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: grafanadatasources.integreatly.org-v1alpha1-edit
+# subjects:
+#   - kind: ServiceAccount
+#     name: grafana-serviceaccount
+#     namespace: {{ .Release.Namespace }}
