@@ -1,11 +1,11 @@
 ---
-apiVersion: integreatly.org/v1alpha1
+apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
   name: pb-dashboard
   generation: 1
   labels:
-    monitoring-key: grafana
+    dashboards: grafana
   annotations:
     {{- if not .Values.ignoreHelmHooks }}
     "helm.sh/hook": post-install,post-upgrade
@@ -14,6 +14,9 @@ metadata:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
   customFolderName: petbattle
   json: |-
     {
