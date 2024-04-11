@@ -118,7 +118,7 @@ spec:
                 - '-email-domain=*'
                 - '-upstream=http://localhost:3000'
                 # Only allow users with access to view the grafana route
-                - '-openshift-sar={"namespace": "{{ .Values.namespace }}", "resource": "routes", "name": "pb-grafana-route", "verb": "get"}'
+                - '-openshift-sar={"namespace": "{{ .Release.Namespace }}", "resource": "routes", "name": "pb-grafana-route", "verb": "get"}'
                 - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get"}}'
                 - '-tls-cert=/etc/tls/private/tls.crt'
                 - '-tls-key=/etc/tls/private/tls.key'
