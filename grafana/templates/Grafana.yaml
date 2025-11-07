@@ -179,6 +179,12 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: prometheus-grafanadatasource
+  annotations:
+    {{- if not .Values.ignoreHelmHooks }}
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "25"
+    {{- end }}
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   valuesFrom:
     - targetPath: "secureJsonData.httpHeaderValue1"
