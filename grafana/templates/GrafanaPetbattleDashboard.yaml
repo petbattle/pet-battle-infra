@@ -17,7 +17,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  customFolderName: petbattle
+  folder: petbattle
   json: |-
     {
       "annotations": {
