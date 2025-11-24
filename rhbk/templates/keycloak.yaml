@@ -10,6 +10,9 @@ spec:
   bootstrapAdmin:
     user:
       secret: keycloak-admin
+{{- if .Values.postgresql.enabled }}
+  # Database configuration - requires postgresql.enabled: true
+  # When disabled, Keycloak uses embedded H2 database (ephemeral, suitable for demos)
   db:
     vendor: postgres
     host: {{ .Values.postgresql.name }}
@@ -19,6 +22,7 @@ spec:
     passwordSecret:
       name: {{ .Values.postgresql.name }}-credentials
       key: password
+{{- end }}
   http:
     tlsSecret: keycloak-tls
     # https://www.keycloak.org/operator/advanced-configuration#_parameterizing_service_labels_and_annotations
