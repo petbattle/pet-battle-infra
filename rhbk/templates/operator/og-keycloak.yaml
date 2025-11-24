@@ -1,0 +1,13 @@
+{{- if .Values.operator.enabled }}
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: keycloak
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  upgradeStrategy: Default
+  targetNamespaces:
+    - {{ .Release.Namespace }}
+{{- end }}

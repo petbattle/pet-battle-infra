@@ -1,0 +1,43 @@
+# Default values for rhbk.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# pet-battle redirect uri name
+pet_battle_uri_name: pet-battle
+
+# override in argo
+# --set global.clusterDomain=$(oc get dns.config/cluster -o jsonpath='apps.{.spec.baseDomain}')
+app_domain: example.com
+
+operator:
+  enabled: true
+  channel: stable-v26.2
+  installPlanApproval: Automatic
+
+keycloak:
+  bootstrapAdmin:
+    username: admin
+    password: admin
+  # logging:
+  #   # Set the log output to JSON or default (plain) unstructured logging
+  #   logConsoleOutput: json
+  # https://www.keycloak.org/high-availability/multi-cluster/deploy-keycloak-kubernetes
+  metrics:
+    enabled: true
+    eventMetricsUserEnabled: true
+    grafanaDashboardsEnabled: false
+  resources:
+    requests:
+      cpu: 300m
+      memory: 700Mi
+    limits:
+      cpu: '2'
+      memory: 2Gi
+
+postgresql:
+  enabled: true
+  name: postgresql-db
+  ssl: true
+  image:
+    name: docker.io/library/postgres
+    tag: 17
