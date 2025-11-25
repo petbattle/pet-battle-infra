@@ -1,0 +1,95 @@
+---
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: KeycloakRealmImport
+metadata:
+  name: pbrealm
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  keycloakCRName: keycloak
+  realm:
+    id: "pbrealm"
+    realm: "pbrealm"
+    displayName: "Pet Battle Single Sign On Realm"
+    enabled: true
+    loginWithEmailAllowed: false
+    registrationAllowed: true
+    registrationEmailAsUsername: false
+    rememberMe: true
+    sslRequired: "external"
+    clients:
+      - name: pbserver
+        clientId: pbserver
+        secret: {{ uuidv4 | quote }}
+        bearerOnly: true
+        protocol: openid-connect
+        standardFlowEnabled: true
+        serviceAccountsEnabled: true
+        directAccessGrantsEnabled: true
+        surrogateAuthRequired: false
+        enabled: true
+        clientAuthenticatorType: "client-secret"
+        consentRequired: false
+        implicitFlowEnabled: false
+        authorizationServicesEnabled: false
+        publicClient: false
+        frontchannelLogout: false
+        fullScopeAllowed: true
+        nodeReRegistrationTimeout: -1
+      - name: pbclient
+        clientId: pbclient
+        bearerOnly: false
+        protocol: openid-connect
+        publicClient: true
+        redirectUris:
+          - "https://{{ .Values.pet_battle_uri_name }}-{{ .Release.Namespace }}.{{ .Values.app_domain }}/*"
+          - "http://localhost:4200/*"
+        attributes:
+          post.logout.redirect.uris: "https://{{ .Values.pet_battle_uri_name }}-{{ .Release.Namespace }}.{{ .Values.app_domain }}/*,http://localhost:4200/*"
+        webOrigins:
+          - "*"
+        standardFlowEnabled: true
+        serviceAccountsEnabled: true
+        directAccessGrantsEnabled: true
+        surrogateAuthRequired: false
+        enabled: true
+        clientAuthenticatorType: "client-secret"
+        consentRequired: false
+        implicitFlowEnabled: false
+        frontchannelLogout: false
+        fullScopeAllowed: true
+        nodeReRegistrationTimeout: -1
+    users:
+      - username: "pbadmin"
+        firstName: "pbadmin"
+        lastName: "pbadmin"
+        email: "pbadmin@petbattle.com"
+        enabled: true
+        credentials:
+          - type: "password"
+            value: "password"
+        realmRoles:
+          - "pbtest"
+          - "pbadmin"
+          - "pbplayer"
+          - "pbviewer"
+        clientRoles:
+          account:
+            - "manage-account"
+            - "view-profile"
+          realm-management:
+            - "manage-users"
+            - "view-users"
+            - "query-users"
+            - "create-client"
+      - username: "myuser"
+        firstName: "John"
+        lastName: "Doe"
+        email: "myuser@petbattle.com"
+        enabled: true
+        credentials:
+          - type: "password"
+            value: "password"
+        realmRoles:
+          - "pbplayer"
+          - "pbviewer"
